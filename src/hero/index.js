@@ -40,7 +40,7 @@ export const settings = {
     text: {
       type: 'string',
       source: 'html',
-      selector: 'p',
+      selector: 'h1',
     },
     backgroundColor: {
       type: 'string',
@@ -52,7 +52,6 @@ export const settings = {
     },
     contentClassName: {
       type: 'string',
-      default: 'container',
     },
     contentWidth: {
       type: 'number',
@@ -120,12 +119,6 @@ export const settings = {
         { !! url && (
           <InspectorControls>
             <PanelBody title={ __('Content Settings') }>
-              <TextControl
-                label={ __('Wrapper CSS Class') }
-                value={ contentClassName }
-                onChange={ value => setAttributes({ contentClassName: value }) }
-              />
-
               <SelectControl
                 label={ __('Content Width') }
                 value={ contentWidth }
@@ -161,6 +154,12 @@ export const settings = {
                   { label: __('Bottom'), value: 'bottom' },
                 ] }
                 onChange={ value => setAttributes({ contentVerticalPosition: value }) }
+              />
+
+              <TextControl
+                label={ __('Wrapper CSS Class') }
+                value={ contentClassName }
+                onChange={ value => setAttributes({ contentClassName: value }) }
               />
             </PanelBody>
 
