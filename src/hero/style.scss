@@ -1,10 +1,90 @@
 
 // The class name needs to match the names of the category and block
 .wp-block-cloudblocks-hero {
-  padding: 60px 20px;
-  text-align: center;
+  height: 45vh;
+  min-height: 400px;
+  padding: 30px 0;
 
-  h1 {
-    margin: 0;
+  background-size: cover;
+  background-position: top center;
+
+  .wp-block-cloudblocks-hero__content {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
+    justify-content: flex-start;
+
+    // Vertical Position
+    &.v-aligntop {
+      align-items: flex-start;
+    }
+
+    &.v-aligncenter {
+      align-items: center;
+    }
+
+    &.v-alignbottom {
+      align-items: flex-end;
+    }
+
+    // Horizontal Position
+    &.h-alignleft {
+      justify-content: flex-start;
+
+      .wp-block-cloudblocks-hero__text {
+        margin-right: 16px;
+      }
+    }
+
+    &.h-aligncenter {
+      justify-content: center;
+
+      .wp-block-cloudblocks-hero__text {
+        margin-left: 8px;
+        margin-right: 8px;
+      }
+    }
+
+    &.h-alignright {
+      justify-content: flex-end;
+
+      .wp-block-cloudblocks-hero__text {
+        margin-left: 16px;
+      }
+    }
+
+    .wp-block-cloudblocks-hero__text {
+      position: relative;
+      padding: 20px 30px;
+
+      .has-background-dim {
+        background-color: inherit;
+        bottom: 0;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        @for $i from 1 through 10 {
+          &.has-background-dim-#{ $i * 10 } {
+            opacity: $i * 0.1;
+          }
+        }
+      }
+
+      h1 {
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        font-weight: 700;
+        font-size: 16.8px;
+        font-family: "Roboto Slab", sans-serif;
+
+        @media (min-width: 30em) {
+          font-size: 23.8px;
+        }
+      }
+    }
   }
 }
