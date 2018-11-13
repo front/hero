@@ -14,7 +14,15 @@ const { Fragment } = element;
 const { __ } = i18n;
 
 const { IconButton, Toolbar, PanelBody, TextControl, SelectControl, RangeControl } = components;
-const { BlockControls, RichText, MediaPlaceholder, MediaUpload, InspectorControls, PanelColorSettings } = editor;
+const {
+  BlockControls,
+  RichText,
+  MediaPlaceholder,
+  MediaUpload,
+  InspectorControls,
+  PanelColorSettings,
+  AlignmentToolbar,
+} = editor;
 
 /**
  * Constants
@@ -24,7 +32,7 @@ const ALLOWED_MEDIA_TYPES = [ 'image' ];
 export const name = 'hero';
 
 export const settings = {
-  title: __('Hero (sivil)'),
+  title: __('Hero'),
 
   // description: __('A custom block for Gutenberg Cloud'),
 
@@ -44,7 +52,7 @@ export const settings = {
     },
     backgroundColor: {
       type: 'string',
-      default: '#FFFFFF', // hexa with 6 digits
+      // default: '#FFFFFF', // hexa with 6 digits
     },
     backgroundOpacity: {
       type: 'number',
@@ -59,15 +67,19 @@ export const settings = {
     },
     contentVerticalPosition: {
       type: 'string',
-      default: 'bottom',
     },
     contentHorizontalPosition: {
       type: 'string',
-      default: 'left',
+    },
+    contentTextColor: {
+      type: 'string',
+    },
+    contentTextAlign: {
+      type: 'string',
     },
   },
 
-  edit ({ attributes, className, setAttributes, isSelected }) {
+  edit ({ attributes, className, setAttributes }) {
     const {
       url,
       id,
@@ -78,6 +90,8 @@ export const settings = {
       contentWidth,
       contentHorizontalPosition,
       contentVerticalPosition,
+      contentTextColor,
+      contentTextAlign,
     } = attributes;
 
     const onSelectMedia = media => {
@@ -97,6 +111,12 @@ export const settings = {
         <BlockControls>
           { !! url && (
             <Fragment>
+              <AlignmentToolbar
+                value={ contentTextAlign }
+                onChange={ value => {
+                  setAttributes({ contentTextAlign: value });
+                } }
+              />
               <Toolbar>
                 <MediaUpload
                   onSelect={ onSelectMedia }
@@ -164,16 +184,23 @@ export const settings = {
             </PanelBody>
 
             <PanelColorSettings
-              title={ __('Content Overlay') }
-              initialOpen={ true }
-              colorSettings={ [ {
-                value: backgroundColor,
-                onChange: color => setAttributes({ backgroundColor: color }),
-                label: __('Overlay Color'),
-              } ] }
+              title={ __('Color Settings') }
+              initialOpen={ false }
+              colorSettings={ [
+                {
+                  value: backgroundColor,
+                  onChange: color => setAttributes({ backgroundColor: color }),
+                  label: __('Overlay Color'),
+                },
+                {
+                  value: contentTextColor,
+                  onChange: color => setAttributes({ contentTextColor: color }),
+                  label: __('Text Color'),
+                },
+              ] }
             >
               <RangeControl
-                label={ __('Overlay opacity') }
+                label={ __('Overlay Opacity') }
                 value={ backgroundOpacity }
                 onChange={ value => setAttributes({ backgroundOpacity: value }) }
                 min={ 0 }
@@ -212,6 +239,11 @@ export const settings = {
       contentVerticalPosition ? `v-align${contentVerticalPosition}` : '',
     ].join(' ');
 
+    const textClasses = [
+      'wp-block-cloudblocks-hero__text',
+      contentTextAlign ? ` has-${contentTextAlign}-align` : ``,
+    ].join(' ');
+
     const alpha = Math.round(backgroundOpacity / 100 * 255);
     const hex = (alpha + 0x10000).toString(16).substr(-2).toUpperCase();
 
@@ -221,19 +253,18 @@ export const settings = {
       <Fragment>
         { controls }
 
-        <div className={ className } style={ url ? { backgroundImage: `url(${url})` } : {} }>
+        <div className={ className } data-url={ url } style={ url ? { backgroundImage: `url(${url})` } : {} }>
           <div className={ contentClasses }>
-            <div className="" style={ { flexBasis: `${contentWidth}%` } }>
-              <div className="wp-block-cloudblocks-hero__text" style={ { backgroundColor: color } }>
-                { (! RichText.isEmpty(text) || isSelected) && (
-                  <RichText
-                    tagName="h1"
-                    value={ text }
-                    placeholder={ __('Write content') }
-                    onChange={ value => setAttributes({ text: value }) }
-                    inlineToolbar
-                  />
-                ) }
+            <div style={ { flexBasis: `${contentWidth}%` } }>
+              <div className={ textClasses } style={ { backgroudColor: color } }>
+                <RichText
+                  tagName="h1"
+                  value={ text }
+                  placeholder={ __('Write content') }
+                  onChange={ value => setAttributes({ text: value }) }
+                  style={ contentTextColor ? { color: contentTextColor } : {} }
+                  inlineToolbar
+                />
               </div>
             </div>
           </div>
@@ -252,6 +283,8 @@ export const settings = {
       contentWidth,
       contentHorizontalPosition,
       contentVerticalPosition,
+      contentTextAlign,
+      contentTextColor,
     } = attributes;
 
     const contentClasses = [
@@ -259,6 +292,11 @@ export const settings = {
       contentClassName,
       contentWidth !== '100' && contentHorizontalPosition ? `h-align${contentHorizontalPosition}` : '',
       contentVerticalPosition ? `v-align${contentVerticalPosition}` : '',
+    ].join(' ');
+
+    const textClasses = [
+      'wp-block-cloudblocks-hero__text',
+      contentTextAlign ? ` has-${contentTextAlign}-align` : ``,
     ].join(' ');
 
     const alpha = Math.round(backgroundOpacity / 100 * 255);
@@ -270,9 +308,13 @@ export const settings = {
       <div className={ className } style={ url ? { backgroundImage: `url(${url})` } : {} }>
         <div className={ contentClasses }>
           <div style={ { flexBasis: `${contentWidth}%` } }>
-            <div className="wp-block-cloudblocks-hero__text" style={ { backgroundColor: color } }>
+            <div className={ textClasses } style={ { backgroundColor: color } }>
               { ! RichText.isEmpty(text) && (
-                <RichText.Content tagName="h1" value={ text } />
+                <RichText.Content
+                  tagName="h1"
+                  value={ text }
+                  style={ contentTextColor ? { color: contentTextColor } : {} }
+                />
               ) }
             </div>
           </div>

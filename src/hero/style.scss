@@ -11,8 +11,6 @@
   .wp-block-cloudblocks-hero__content {
     display: flex;
     height: 100%;
-    align-items: flex-end;
-    justify-content: flex-start;
 
     // Vertical Position
     &.v-aligntop {
@@ -57,26 +55,21 @@
       position: relative;
       padding: 20px 30px;
 
-      .has-background-dim {
-        background-color: inherit;
-        bottom: 0;
-        content: "";
-        left: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
+      &.has-left-align {
+        text-align: left;
+      }
 
-        @for $i from 1 through 10 {
-          &.has-background-dim-#{ $i * 10 } {
-            opacity: $i * 0.1;
-          }
-        }
+      &.has-center-align {
+        text-align: center;
+      }
+
+      &.has-right-align {
+        text-align: right;
       }
 
       h1 {
         margin: 0;
         padding: 0;
-        text-align: left;
         font-weight: 700;
         font-size: 16.8px;
         font-family: "Roboto Slab", sans-serif;
