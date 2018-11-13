@@ -256,7 +256,7 @@ export const settings = {
         <div className={ className } data-url={ url } style={ url ? { backgroundImage: `url(${url})` } : {} }>
           <div className={ contentClasses }>
             <div style={ { flexBasis: `${contentWidth}%` } }>
-              <div className={ textClasses } style={ { backgroudColor: color } }>
+              <div className={ textClasses } style={ { backgroundColor: color } }>
                 <RichText
                   tagName="h1"
                   value={ text }
