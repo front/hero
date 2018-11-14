@@ -1,6 +1,6 @@
 {
   "name": "hero",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A custom block for Gutenberg Cloud",
   "main": "build/index.js",
   "gutenbergCloud": {
