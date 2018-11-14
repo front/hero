@@ -70,6 +70,7 @@ export const settings = {
     },
     contentHorizontalPosition: {
       type: 'string',
+      default: 'left',
     },
     contentTextColor: {
       type: 'string',
