@@ -52,7 +52,6 @@ export const settings = {
     },
     backgroundColor: {
       type: 'string',
-      // default: '#FFFFFF', // hexa with 6 digits
     },
     backgroundOpacity: {
       type: 'number',
@@ -63,14 +62,12 @@ export const settings = {
     },
     contentWidth: {
       type: 'number',
-      default: 50,
     },
     contentVerticalPosition: {
       type: 'string',
     },
     contentHorizontalPosition: {
       type: 'string',
-      default: 'left',
     },
     contentTextColor: {
       type: 'string',
@@ -107,110 +104,104 @@ export const settings = {
       });
     };
 
-    const controls = (
+    const controls = !! url && (
       <Fragment>
         <BlockControls>
-          { !! url && (
-            <Fragment>
-              <AlignmentToolbar
-                value={ contentTextAlign }
-                onChange={ value => {
-                  setAttributes({ contentTextAlign: value });
-                } }
-              />
-              <Toolbar>
-                <MediaUpload
-                  onSelect={ onSelectMedia }
-                  allowedTypes={ ALLOWED_MEDIA_TYPES }
-                  value={ id }
-                  render={ ({ open }) => (
-                    <IconButton
-                      className="components-toolbar__control"
-                      label={ __('Edit media') }
-                      icon="edit"
-                      onClick={ open }
-                    />
-                  ) }
-                />
-              </Toolbar>
-            </Fragment>
-          ) }
-        </BlockControls>
-
-        { !! url && (
-          <InspectorControls>
-            <PanelBody title={ __('Content Settings') }>
-              <SelectControl
-                label={ __('Content Width') }
-                value={ contentWidth }
-                options={ [
-                  { label: '1/1', value: 100 },
-                  { label: '1/2', value: 50 },
-                  { label: '1/3', value: 33 },
-                  { label: '1/4', value: 25 },
-                ] }
-                onChange={ value => setAttributes({ contentWidth: value }) }
-              />
-
-              { contentWidth !== '100' && (
-                <SelectControl
-                  label={ __('Content Horizontal Position') }
-                  value={ contentHorizontalPosition }
-                  options={ [
-                    { label: __('Left'), value: 'left' },
-                    { label: __('Center'), value: 'center' },
-                    { label: __('Right'), value: 'right',
-                    },
-                  ] }
-                  onChange={ value => setAttributes({ contentHorizontalPosition: value }) }
+          <AlignmentToolbar
+            value={ contentTextAlign }
+            onChange={ value => {
+              setAttributes({ contentTextAlign: value });
+            } }
+          />
+          <Toolbar>
+            <MediaUpload
+              onSelect={ onSelectMedia }
+              allowedTypes={ ALLOWED_MEDIA_TYPES }
+              value={ id }
+              render={ ({ open }) => (
+                <IconButton
+                  className="components-toolbar__control"
+                  label={ __('Edit media') }
+                  icon="edit"
+                  onClick={ open }
                 />
               ) }
+            />
+          </Toolbar>
+        </BlockControls>
 
-              <SelectControl
-                label={ __('Content Vertical Position') }
-                value={ contentVerticalPosition }
-                options={ [
-                  { label: __('Top'), value: 'top' },
-                  { label: __('Center'), value: 'center' },
-                  { label: __('Bottom'), value: 'bottom' },
-                ] }
-                onChange={ value => setAttributes({ contentVerticalPosition: value }) }
-              />
-
-              <TextControl
-                label={ __('Wrapper CSS Class') }
-                value={ contentClassName }
-                onChange={ value => setAttributes({ contentClassName: value }) }
-              />
-            </PanelBody>
-
-            <PanelColorSettings
-              title={ __('Color Settings') }
-              initialOpen={ false }
-              colorSettings={ [
-                {
-                  value: backgroundColor,
-                  onChange: color => setAttributes({ backgroundColor: color }),
-                  label: __('Overlay Color'),
-                },
-                {
-                  value: contentTextColor,
-                  onChange: color => setAttributes({ contentTextColor: color }),
-                  label: __('Text Color'),
-                },
+        <InspectorControls>
+          <PanelBody title={ __('Content Settings') }>
+            <SelectControl
+              label={ __('Content Width') }
+              value={ contentWidth }
+              options={ [
+                { label: '1/1', value: 100 },
+                { label: '1/2', value: 50 },
+                { label: '1/3', value: 33 },
+                { label: '1/4', value: 25 },
               ] }
-            >
-              <RangeControl
-                label={ __('Overlay Opacity') }
-                value={ backgroundOpacity }
-                onChange={ value => setAttributes({ backgroundOpacity: value }) }
-                min={ 0 }
-                max={ 100 }
-                step={ 5 }
+              onChange={ value => setAttributes({ contentWidth: parseInt(value) }) }
+            />
+
+            { !!contentWidth && contentWidth !== 100 && (
+              <SelectControl
+                label={ __('Content Horizontal Position') }
+                value={ contentHorizontalPosition }
+                options={ [
+                  { label: __('Left'), value: 'left' },
+                  { label: __('Center'), value: 'center' },
+                  { label: __('Right'), value: 'right',
+                  },
+                ] }
+                onChange={ value => setAttributes({ contentHorizontalPosition: value }) }
               />
-            </PanelColorSettings>
-          </InspectorControls>
-        )}
+            ) }
+
+            <SelectControl
+              label={ __('Content Vertical Position') }
+              value={ contentVerticalPosition }
+              options={ [
+                { label: __('Top'), value: 'top' },
+                { label: __('Center'), value: 'center' },
+                { label: __('Bottom'), value: 'bottom' },
+              ] }
+              onChange={ value => setAttributes({ contentVerticalPosition: value }) }
+            />
+
+            <TextControl
+              label={ __('Wrapper CSS Class') }
+              value={ contentClassName }
+              onChange={ value => setAttributes({ contentClassName: value }) }
+            />
+          </PanelBody>
+
+          <PanelColorSettings
+            title={ __('Color Settings') }
+            initialOpen={ false }
+            colorSettings={ [
+              {
+                value: backgroundColor,
+                onChange: color => setAttributes({ backgroundColor: color }),
+                label: __('Overlay Color'),
+              },
+              {
+                value: contentTextColor,
+                onChange: color => setAttributes({ contentTextColor: color }),
+                label: __('Text Color'),
+              },
+            ] }
+          >
+            <RangeControl
+              label={ __('Overlay Opacity') }
+              value={ backgroundOpacity }
+              onChange={ value => setAttributes({ backgroundOpacity: value }) }
+              min={ 0 }
+              max={ 100 }
+              step={ 5 }
+            />
+          </PanelColorSettings>
+        </InspectorControls>
       </Fragment>
     );
 
@@ -236,7 +227,7 @@ export const settings = {
     const contentClasses = [
       'wp-block-cloudblocks-hero__content',
       contentClassName,
-      contentWidth !== '100' && contentHorizontalPosition ? `h-align${contentHorizontalPosition}` : '',
+      !!contentWidth && contentWidth !== 100 && contentHorizontalPosition ? `h-align${contentHorizontalPosition}` : '',
       contentVerticalPosition ? `v-align${contentVerticalPosition}` : '',
     ].join(' ');
 
@@ -256,7 +247,7 @@ export const settings = {
 
         <div className={ className } data-url={ url } style={ url ? { backgroundImage: `url(${url})` } : {} }>
           <div className={ contentClasses }>
-            <div style={ { flexBasis: `${contentWidth}%` } }>
+            <div className="wp-block-cloudblocks-hero__wrapper" style={ { flexBasis: `${contentWidth}%` } }>
               <div className={ textClasses } style={ { backgroundColor: color } }>
                 <RichText
                   tagName="h1"
@@ -265,6 +256,7 @@ export const settings = {
                   onChange={ value => setAttributes({ text: value }) }
                   style={ contentTextColor ? { color: contentTextColor } : {} }
                   inlineToolbar
+                  keepPlaceholderOnFocus
                 />
               </div>
             </div>
@@ -291,7 +283,7 @@ export const settings = {
     const contentClasses = [
       'wp-block-cloudblocks-hero__content',
       contentClassName,
-      contentWidth !== '100' && contentHorizontalPosition ? `h-align${contentHorizontalPosition}` : '',
+      !!contentWidth && contentWidth !== 100 && contentHorizontalPosition ? `h-align${contentHorizontalPosition}` : '',
       contentVerticalPosition ? `v-align${contentVerticalPosition}` : '',
     ].join(' ');
 
@@ -308,7 +300,7 @@ export const settings = {
     return (
       <div className={ className } style={ url ? { backgroundImage: `url(${url})` } : {} }>
         <div className={ contentClasses }>
-          <div style={ { flexBasis: `${contentWidth}%` } }>
+          <div className="wp-block-cloudblocks-hero__wrapper" style={ { flexBasis: `${contentWidth}%` } }>
             <div className={ textClasses } style={ { backgroundColor: color } }>
               { ! RichText.isEmpty(text) && (
                 <RichText.Content
