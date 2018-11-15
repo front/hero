@@ -7,7 +7,7 @@
     "js": "build/index.js",
     "css": "build/style.css",
     "screenshot": "screenshot.png",
-    "name": "My Custom Block"
+    "name": "Hero"
   },
   "scripts": {
     "build": "NODE_ENV=production webpack",
@@ -15,7 +15,7 @@
     "deploy": "npm run build && npm publish --access public",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "build-block": "zip -r hero.zip build package.json"
+    "build-block": "cd .. && zip -r hero/hero.zip hero/build hero/package.json"
   },
   "keywords": [
     "gutenberg",
